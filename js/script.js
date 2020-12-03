@@ -1,10 +1,8 @@
-// milestone 1:
-// definire un array di oggetti; ogni oggetto
-// rappresenta un'icona, che è caratterizzata da:
-// nome, prefisso, tipo e famiglia.
-// Utilizzando la funzione forEach e il template
-// literal, visualizzare in pagina tutte le icone con il
-// proprio nome.
+// milestone 2:
+// definire un array di colori e associare ad ogni
+// tipo di icona un colore.
+// Visualizzare le icone di colore diverso in base al
+// tipo.
 $(document).ready(
   function () {
     const icons = [
@@ -106,9 +104,21 @@ $(document).ready(
       },
     ];
 
-    var container = $('#icon');
-    console.log(container);
-    print(icons, container)
+    const colorArray = [
+      'blue',
+      'gray',
+      'coral'
+    ];
+
+    const container = $('#icon');
+
+    const types = getType(icons);
+    // console.log(types);
+
+    const colorIcon = addColor(icons, colorArray, types);
+    // console.log(colorIcon);
+    print(colorIcon, container)
+
 
 
   }
@@ -119,26 +129,47 @@ $(document).ready(
 function print(array, container) {
 
     array.forEach((element, i) => {
-      // {
-      //   name: "dog",
-      //   prefix: "fa-",
-      //   type: "animal",
-      //   family: "fas"
-      // },
-      const {name, prefix, family} = element;
 
-      container.append(`
-        <div>
-          <i class="${family} ${prefix}${name}"></i>
-          <h5>${name.toUpperCase()}</h5>
-        </div>
-        `);
-        console.log(`
-          <div>
-            <i class="${family} ${prefix}${name}"></i>
-            <h5>${name}</h5>
-          </div>
-          `);
-    });
+    const {name, prefix, family, color} = element;
+    // console.log(element);
 
+    container.append(`
+      <div>
+        <i class="${family} ${prefix}${name}" style="color: ${color}"></i>
+        <h5>${name.toUpperCase()}</h5>
+      </div>
+      `);
+    }
+  );
+};
+
+function getType(array) {
+
+  const typesArray = [];
+
+  array.forEach((element, i) => {
+    if (typesArray.includes(element.type) == false) {
+      typesArray.push(element.type);
+    }
+    // console.log(element.type);
+  });
+  return typesArray;
+};
+
+function addColor(iconsArray, colorArray, typesArray) {
+
+
+          const colorIcons = iconsArray.map(
+            (element) => {
+              const indexType = typesArray.indexOf(element.type);
+              const color = colorArray[indexType];
+              // console.log(color);
+
+              const newElement = {...element,
+                color
+              }
+              return newElement;
+            }
+          );
+          return colorIcons;
 };
