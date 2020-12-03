@@ -1,8 +1,9 @@
-// milestone 2:
-// definire un array di colori e associare ad ogni
-// tipo di icona un colore.
-// Visualizzare le icone di colore diverso in base al
-// tipo.
+// milestone 3:
+// aggiungere una select per filtrare le icone in
+// base al tipo.
+// Popolare le options della select dinamicamente
+// e, ogni volta che cambia il valore selezionato,
+// visualizzare le icone corrispondenti.
 $(document).ready(
   function () {
     const icons = [
@@ -105,9 +106,9 @@ $(document).ready(
     ];
 
     const colorArray = [
-      'blue',
-      'gray',
-      'coral'
+      '#000080',
+      '	#696969',
+      '	#e9967a'
     ];
 
     const container = $('#icon');
@@ -117,9 +118,24 @@ $(document).ready(
 
     const colorIcon = addColor(icons, colorArray, types);
     // console.log(colorIcon);
-    print(colorIcon, container)
+    print(colorIcon, container);
+    selectTypePrint($('select'), types);
 
-
+    $('select').change(
+      function () {
+        const selectiontType = $(this).val();
+        console.log(selectiontType);
+        if (selectiontType == '') {
+            print(colorIcon, container);
+        } else {
+            const filteredIcon = colorIcon.filter((element) => {
+              return element.type == selectiontType;
+            }
+          );
+          print(filteredIcon, container);
+        }
+      }
+    );
 
   }
 );
@@ -127,6 +143,8 @@ $(document).ready(
 
 // // FUNZIONI----------------------------------------------
 function print(array, container) {
+
+    container.html('');
 
     array.forEach((element, i) => {
 
@@ -141,7 +159,7 @@ function print(array, container) {
       `);
     }
   );
-};
+}
 
 function getType(array) {
 
@@ -154,7 +172,7 @@ function getType(array) {
     // console.log(element.type);
   });
   return typesArray;
-};
+}
 
 function addColor(iconsArray, colorArray, typesArray) {
 
@@ -172,4 +190,15 @@ function addColor(iconsArray, colorArray, typesArray) {
             }
           );
           return colorIcons;
-};
+}
+
+function selectTypePrint(select, types) {
+
+          types.forEach(
+            (element) => {
+              select.append(`
+                  <option value="${element}">${element}</option>
+                `);
+            }
+          );
+}
